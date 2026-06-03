@@ -4,6 +4,7 @@ import com.logistics.courier_tracking.dto.ApiResponse;
 import com.logistics.courier_tracking.dto.PageResponse;
 import com.logistics.courier_tracking.entity.Warehouse;
 import com.logistics.courier_tracking.service.WarehouseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class WarehouseController {
     private WarehouseService warehouseService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Warehouse>> saveWarehouse(@RequestBody Warehouse warehouse) {
+    public ResponseEntity<ApiResponse<Warehouse>> saveWarehouse(@Valid @RequestBody Warehouse warehouse) {
         return ResponseEntity.ok(ApiResponse.created("Warehouse created successfully", warehouseService.saveWarehouse(warehouse)));
     }
 
@@ -43,7 +44,7 @@ public class WarehouseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Warehouse>> updateWarehouse(@PathVariable Long id, @RequestBody Warehouse warehouse) {
+    public ResponseEntity<ApiResponse<Warehouse>> updateWarehouse(@PathVariable Long id, @Valid @RequestBody Warehouse warehouse) {
         return ResponseEntity.ok(ApiResponse.success("Warehouse updated successfully", warehouseService.updateWarehouse(id, warehouse)));
     }
 

@@ -3,6 +3,8 @@ package com.logistics.courier_tracking.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.logistics.courier_tracking.enums.ShipmentStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tracking_history")
@@ -16,10 +18,12 @@ public class TrackingHistory extends AuditEntity {
     @JoinColumn(name = "shipment_id")
     private Shipment shipment;
 
+    @NotBlank(message = "Location cannot be empty")
     private String location;
 
     private String remarks;
 
+    @NotNull(message = "Status cannot be null")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ShipmentStatus status;

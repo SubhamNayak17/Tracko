@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.logistics.courier_tracking.enums.ShipmentStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,13 +22,18 @@ public class Shipment extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Tracking number cannot be empty")
     @Column(unique = true, nullable = false)
     private String trackingNumber;
 
+    @NotBlank(message = "Source cannot be empty")
     private String source;
 
+    @NotBlank(message = "Destination cannot be empty")
     private String destination;
 
+    @NotNull(message = "Weight cannot be null")
+    @DecimalMin(value = "0.1", message = "Weight must be greater than 0")
     private Double weight;
 
     private LocalDateTime shipmentDateTime;

@@ -5,6 +5,7 @@ import com.logistics.courier_tracking.dto.PageResponse;
 import com.logistics.courier_tracking.entity.Payment;
 import com.logistics.courier_tracking.enums.PaymentStatus;
 import com.logistics.courier_tracking.service.PaymentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<Payment> savePayment(@RequestBody Payment payment) {
-        return ResponseEntity.ok(paymentService.savePayment(payment));
+    public ResponseEntity<ApiResponse<Payment>> savePayment(@Valid @RequestBody Payment payment) {
+        return ResponseEntity.ok(ApiResponse.created("Payment created successfully", paymentService.savePayment(payment)));
     }
 
     @PostMapping("/bulk")
@@ -44,8 +45,8 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Payment> updatePayment(@PathVariable Long id, @RequestBody Payment payment) {
-        return ResponseEntity.ok(paymentService.updatePayment(id, payment));
+    public ResponseEntity<ApiResponse<Payment>> updatePayment(@PathVariable Long id, @Valid @RequestBody Payment payment) {
+        return ResponseEntity.ok(ApiResponse.success("Payment updated successfully", paymentService.updatePayment(id, payment)));
     }
 
     @DeleteMapping("/{id}")

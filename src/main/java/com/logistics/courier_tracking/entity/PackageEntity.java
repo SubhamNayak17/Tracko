@@ -2,6 +2,8 @@ package com.logistics.courier_tracking.entity;
 
 import com.logistics.courier_tracking.enums.PackageType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "packages")
@@ -11,14 +13,22 @@ public class PackageEntity extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Package type cannot be null")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PackageType packageType;
 
+    @NotNull(message = "Fragile cannot be null")
     private Boolean fragile;
 
+    @NotNull(message = "Length cannot be null")
+    @DecimalMin(value = "0.1", message = "Length must be greater than 0")
     private Double length;
+    @NotNull(message = "Breadth cannot be null")
+    @DecimalMin(value = "0.1", message = "Breadth must be greater than 0")
     private Double breadth;
+    @NotNull(message = "Height cannot be null")
+    @DecimalMin(value = "0.1", message = "Height must be greater than 0")
     private Double height;
 
     // Constructors

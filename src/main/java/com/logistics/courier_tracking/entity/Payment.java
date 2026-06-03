@@ -4,6 +4,9 @@ package com.logistics.courier_tracking.entity;
 import com.logistics.courier_tracking.enums.PaymentMethod;
 import com.logistics.courier_tracking.enums.PaymentStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -15,12 +18,16 @@ public class Payment extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Amount cannot be null")
+    @DecimalMin(value = "0.1", message = "Amount must be greater than 0")
     private Double amount;
 
+    @NotNull(message = "Payment method cannot be null")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentMethod paymentMethod;
 
+    @NotNull(message = "Payment status cannot be null")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentStatus paymentStatus;

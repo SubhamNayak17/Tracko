@@ -5,6 +5,7 @@ import com.logistics.courier_tracking.dto.PageResponse;
 import com.logistics.courier_tracking.entity.Shipment;
 import com.logistics.courier_tracking.enums.ShipmentStatus;
 import com.logistics.courier_tracking.service.ShipmentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ShipmentController {
     private ShipmentService shipmentService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Shipment>> saveShipment(@RequestBody Shipment shipment) {
+    public ResponseEntity<ApiResponse<Shipment>> saveShipment(@Valid @RequestBody Shipment shipment) {
         return ResponseEntity.ok(ApiResponse.created("Shipment created successfully", shipmentService.saveShipment(shipment)));
     }
 
@@ -54,7 +55,7 @@ public class ShipmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Shipment>> updateShipment(@PathVariable Long id, @RequestBody Shipment shipment) {
+    public ResponseEntity<ApiResponse<Shipment>> updateShipment(@PathVariable Long id, @Valid @RequestBody Shipment shipment) {
         return ResponseEntity.ok(ApiResponse.success("Shipment updated successfully", shipmentService.updateShipment(id, shipment)));
     }
 

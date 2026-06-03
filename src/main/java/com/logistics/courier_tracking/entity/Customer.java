@@ -2,6 +2,8 @@ package com.logistics.courier_tracking.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 
@@ -13,15 +15,20 @@ public class Customer extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
     @Column(unique=true,nullable = false)
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Email must be valid")
     private String email;
 
     @Column(unique = true,nullable = false)
+    @NotBlank(message = "Contact cannot be empty")
     @Size(min = 10, max = 10, message = "Contact number must be exactly 10 digits")
     private String contact;
 
+    @NotBlank(message = "Address cannot be empty")
     private String address;
 
     public Customer() {}

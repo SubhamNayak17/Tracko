@@ -4,6 +4,7 @@ import com.logistics.courier_tracking.dto.ApiResponse;
 import com.logistics.courier_tracking.dto.PageResponse;
 import com.logistics.courier_tracking.entity.Customer;
 import com.logistics.courier_tracking.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,12 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Customer>> saveCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<ApiResponse<Customer>> saveCustomer(@Valid @RequestBody Customer customer) {
         return ResponseEntity.ok(ApiResponse.created("Customer created successfully", customerService.saveCustomer(customer)));
     }
 
     @PostMapping("/bulk")
-    public ResponseEntity<ApiResponse<List<Customer>>> saveAllCustomers(@RequestBody List<Customer> customers) {
+    public ResponseEntity<ApiResponse<List<Customer>>> saveAllCustomers(@Valid @RequestBody List<Customer> customers) {
         return ResponseEntity.ok(ApiResponse.created("Customers created successfully", customerService.saveAllCustomers(customers)));
     }
 
@@ -39,7 +40,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Customer>> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+    public ResponseEntity<ApiResponse<Customer>> updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer customer) {
         return ResponseEntity.ok(ApiResponse.success("Customer updated successfully", customerService.updateCustomer(id, customer)));
     }
 

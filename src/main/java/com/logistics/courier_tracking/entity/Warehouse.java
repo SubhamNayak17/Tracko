@@ -1,6 +1,9 @@
 package com.logistics.courier_tracking.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -12,10 +15,15 @@ public class Warehouse extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+    @NotBlank(message = "Location cannot be empty")
     private String location;
 
+    @NotNull(message = "Capacity cannot be null")
+    @Min(value = 1, message = "Capacity must be at least 1")
     private Integer capacity;
+    @NotBlank(message = "Contact cannot be empty")
     @Column(length = 10, unique = true, nullable = false)
     @Size(min = 10, max = 10, message = "Contact number must be exactly 10 digits")
     private String contact;

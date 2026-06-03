@@ -4,6 +4,7 @@ import com.logistics.courier_tracking.dto.ApiResponse;
 import com.logistics.courier_tracking.dto.PageResponse;
 import com.logistics.courier_tracking.entity.PackageEntity;
 import com.logistics.courier_tracking.service.PackageService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class PackageController {
     private PackageService packageService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PackageEntity>> savePackage(@RequestBody PackageEntity packageEntity) {
+    public ResponseEntity<ApiResponse<PackageEntity>> savePackage(@Valid @RequestBody PackageEntity packageEntity) {
         return ResponseEntity.ok(ApiResponse.created("Package created successfully", packageService.savePackage(packageEntity)));
     }
 
@@ -38,7 +39,7 @@ public class PackageController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<PackageEntity>> updatePackage(@PathVariable Long id, @RequestBody PackageEntity packageEntity) {
+    public ResponseEntity<ApiResponse<PackageEntity>> updatePackage(@PathVariable Long id, @Valid @RequestBody PackageEntity packageEntity) {
         return ResponseEntity.ok(ApiResponse.success("Package updated successfully", packageService.updatePackage(id, packageEntity)));
     }
 

@@ -4,6 +4,7 @@ import com.logistics.courier_tracking.dto.ApiResponse;
 import com.logistics.courier_tracking.dto.PageResponse;
 import com.logistics.courier_tracking.entity.DeliveryAgent;
 import com.logistics.courier_tracking.service.DeliveryAgentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class DeliveryAgentController {
     private DeliveryAgentService deliveryAgentService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<DeliveryAgent>> saveDeliveryAgent(@RequestBody DeliveryAgent deliveryAgent) {
+    public ResponseEntity<ApiResponse<DeliveryAgent>> saveDeliveryAgent(@Valid @RequestBody DeliveryAgent deliveryAgent) {
         return ResponseEntity.ok(ApiResponse.created("Delivery agent created successfully", deliveryAgentService.saveDeliveryAgent(deliveryAgent)));
     }
 
@@ -43,7 +44,7 @@ public class DeliveryAgentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<DeliveryAgent>> updateDeliveryAgent(@PathVariable Long id, @RequestBody DeliveryAgent deliveryAgent) {
+    public ResponseEntity<ApiResponse<DeliveryAgent>> updateDeliveryAgent(@PathVariable Long id, @Valid @RequestBody DeliveryAgent deliveryAgent) {
         return ResponseEntity.ok(ApiResponse.success("Delivery agent updated successfully", deliveryAgentService.updateDeliveryAgent(id, deliveryAgent)));
     }
 

@@ -2,6 +2,9 @@ package com.logistics.courier_tracking.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -12,15 +15,21 @@ public class DeliveryAgent extends AuditEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+
+    @NotBlank(message = "Contact cannot be empty")
     @Column(unique = true, nullable = false, length = 10)
     @Size(min = 10, max = 10, message = "Contact number must be exactly 10 digits")
     private String contact;
 
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Vehicle number cannot be empty")
     private String vehicleNumber;
 
     private Boolean availabilityStatus;
+    @DecimalMin(value = "0.0", message = "Rating must be at least 0")
+    @DecimalMax(value = "5.0", message = "Rating must be at most 5")
     private Double rating;
 
     public DeliveryAgent() {

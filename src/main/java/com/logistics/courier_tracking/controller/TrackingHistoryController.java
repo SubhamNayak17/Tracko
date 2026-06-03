@@ -4,6 +4,7 @@ import com.logistics.courier_tracking.dto.ApiResponse;
 import com.logistics.courier_tracking.dto.PageResponse;
 import com.logistics.courier_tracking.entity.TrackingHistory;
 import com.logistics.courier_tracking.service.TrackingHistoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class TrackingHistoryController {
     private TrackingHistoryService trackingHistoryService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<TrackingHistory>> saveTrackingHistory(@RequestBody TrackingHistory trackingHistory) {
+    public ResponseEntity<ApiResponse<TrackingHistory>> saveTrackingHistory(@Valid @RequestBody TrackingHistory trackingHistory) {
         return ResponseEntity.ok(ApiResponse.created("Tracking history created successfully", trackingHistoryService.saveTrackingHistory(trackingHistory)));
     }
 
@@ -42,8 +43,9 @@ public class TrackingHistoryController {
         return ResponseEntity.ok(ApiResponse.success("Tracking history fetched successfully", trackingHistoryService.getTrackingHistoryByShipmentId(shipmentId)));
     }
 
+
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<TrackingHistory>> updateTrackingHistory(@PathVariable Long id, @RequestBody TrackingHistory trackingHistory) {
+    public ResponseEntity<ApiResponse<TrackingHistory>> updateTrackingHistory(@PathVariable Long id, @Valid @RequestBody TrackingHistory trackingHistory) {
         return ResponseEntity.ok(ApiResponse.success("Tracking history updated successfully", trackingHistoryService.updateTrackingHistory(id, trackingHistory)));
     }
 
