@@ -22,7 +22,6 @@ public class Shipment extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Tracking number cannot be empty")
     @Column(unique = true, nullable = false)
     private String trackingNumber;
 

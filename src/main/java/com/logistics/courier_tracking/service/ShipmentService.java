@@ -14,7 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ShipmentService {
@@ -23,9 +26,12 @@ public class ShipmentService {
     private ShipmentRepository shipmentRepository;
 
     public Shipment saveShipment(Shipment shipment) {
-        if (shipmentRepository.findByTrackingNumber(shipment.getTrackingNumber()).isPresent()) {
-            throw new DuplicateResourceException("Shipment already exists with tracking number: " + shipment.getTrackingNumber());
-        }
+        // Auto generate tracking number
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String uuid = UUID.randomUUID().toString().substring(0, 8);
+        shipment.setTrackingNumber("TRK-" + date + "-" + uuid);
+
+        // Existing validations
         if (shipment.getSource() == null || shipment.getSource().isEmpty()) {
             throw new BadRequestException("Shipment source cannot be empty");
         }
@@ -35,7 +41,7 @@ public class ShipmentService {
         if (shipment.getSource().equalsIgnoreCase(shipment.getDestination())) {
             throw new BadRequestException("Shipment source and destination cannot be the same");
         }
-        if (shipment.getWeight() <= 0) {
+        if (shipment.getWeight() == null || shipment.getWeight() <= 0) {
             throw new BadRequestException("Shipment weight must be greater than 0");
         }
         shipment.setStatus(ShipmentStatus.CREATED);
@@ -67,7 +73,7 @@ public class ShipmentService {
 
     public Shipment updateShipment(Long id, Shipment shipment) {
         Shipment existing = getShipmentById(id);
-        existing.setTrackingNumber(shipment.getTrackingNumber());
+        // Notice - trackingNumber is NOT updated
         existing.setSource(shipment.getSource());
         existing.setDestination(shipment.getDestination());
         existing.setWeight(shipment.getWeight());
@@ -102,6 +108,12 @@ public class ShipmentService {
 
 
     public List<Shipment> saveAllShipments(List<Shipment> shipments) {
+        shipments.forEach(shipment -> {
+            String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String uuid = UUID.randomUUID().toString().substring(0, 8);
+            shipment.setTrackingNumber("TRK-" + date + "-" + uuid);
+            shipment.setStatus(ShipmentStatus.CREATED);
+        });
         return shipmentRepository.saveAll(shipments);
     }
 
