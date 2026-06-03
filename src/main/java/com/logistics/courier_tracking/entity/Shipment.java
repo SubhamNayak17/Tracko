@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "shipments")
-public class Shipment {
+public class Shipment extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

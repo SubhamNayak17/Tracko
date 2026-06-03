@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name="warehouses")
-public class Warehouse {
+public class Warehouse extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
