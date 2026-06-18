@@ -95,4 +95,12 @@ public class ShipmentController {
         return ResponseEntity.ok(ApiResponse.success("Shipments fetched successfully",
                 shipmentService.getShipmentsByStatusPaginated(status, page, size, sortBy, sortDir)));
     }
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<Shipment>> updateShipmentStatus(
+            @PathVariable Long id,
+            @RequestParam ShipmentStatus status) {
+        return ResponseEntity.ok(ApiResponse.success(
+                "Shipment status updated successfully",
+                shipmentService.updateShipmentStatus(id, status)));
+    }
 }

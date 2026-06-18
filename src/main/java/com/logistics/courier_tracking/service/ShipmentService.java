@@ -165,4 +165,21 @@ public class ShipmentService {
                 shipmentPage.isLast()
         );
     }
+    private void validateStatusTransition(ShipmentStatus current, ShipmentStatus next) {
+        boolean valid = switch (current) {
+            case CREATED -> next == ShipmentStatus.IN_TRANSIT || next == ShipmentStatus.CANCELLED;
+            case IN_TRANSIT -> next == ShipmentStatus.OUT_FOR_DELIVERY || next == ShipmentStatus.CANCELLED;
+            case OUT_FOR_DELIVERY -> next == ShipmentStatus.DELIVERED || next == ShipmentStatus.CANCELLED;
+            case DELIVERED, CANCELLED -> false;
+        };
+        if (!valid) {
+            throw new BadRequestException("Invalid status transition from " + current + " to " + next);
+        }
+    }
+    public Shipment updateShipmentStatus(Long id, ShipmentStatus newStatus) {
+        Shipment existing = getShipmentById(id);
+        validateStatusTransition(existing.getStatus(), newStatus);
+        existing.setStatus(newStatus);
+        return shipmentRepository.save(existing);
+    }
 }

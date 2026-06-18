@@ -43,6 +43,10 @@ public class CustomerController {
     public ResponseEntity<ApiResponse<Customer>> updateCustomer(@PathVariable Long id, @Valid @RequestBody Customer customer) {
         return ResponseEntity.ok(ApiResponse.success("Customer updated successfully", customerService.updateCustomer(id, customer)));
     }
+    @GetMapping("/{email}")
+    public ResponseEntity<ApiResponse<Customer>> getCustomerByEmail(@PathVariable String email){
+        return ResponseEntity.ok(ApiResponse.success("Customer Fetched Successfully",customerService.getCustomerByEmail(email)));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteCustomer(@PathVariable Long id) {
