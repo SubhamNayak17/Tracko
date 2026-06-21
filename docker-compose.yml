@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:17
+    container_name: tracko-db
+    environment:
+      POSTGRES_DB: courier_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - tracko-network
+
+  # Spring Boot Application
+  app:
+    build: .
+    container_name: tracko-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/courier_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      GEMINI_API_KEY: your_gemini_api_key_here
+      GEMINI_API_URL: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+    depends_on:
+      - postgres
+    networks:
+      - tracko-network
+
+volumes:
+  postgres_data:
+
+networks:
+  tracko-network:
+    driver: bridge
